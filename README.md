@@ -1,13 +1,15 @@
 # Sphere Data Fetching and Processing Script
 
-This script fetches blocklog data from the Sphere API, processes it, and optionally syncs it to an S3 bucket. It requires specific start and end timestamps (in UTC epoch format) for data retrieval.
+This script fetches blocklog data from the Sphere API, processes it, and optionally syncs it to an S3 bucket or the influx db. It requires specific start and end timestamps (in UTC epoch format) for data retrieval.
+
+**WARNING: Influx db support hasn't been tested.**
 
 ## Installation
 
 Before running the script, ensure you have the necessary Python libraries installed. You can install them using pip:
 
 ```
-pip install pandas boto3 requests argparse
+pip install pandas boto3 requests argparse influxdb_client
 ```
 
 ## Configuration
@@ -16,16 +18,17 @@ The script requires a set of configurations. These include:
 
 1. **Sphere Configuration**: This is the API key for the Sphere API, defined in the script as `API_KEY`. Replace the API key with your own.
 
-2. **S3 Configuration**: If you intend to sync the data to an S3 bucket, specify the bucket name, AWS access key ID, AWS secret access key, and AWS region name. They are defined in the script as `S3_BUCKET_NAME`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION_NAME` respectively. Replace them with your own.
+2. **S3 Configuration**: If you intend to sync the data to an S3 bucket, specify the bucket name, AWS access key ID, AWS secret access key, and AWS region name. They are defined in the script as `S3_BUCKET`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and `AWS_REGION_NAME` respectively. Replace them with your own.
+
+3. **Influx Configuration**: If you intend to sync the data to influxdb, specify the influx bucket name, influx url, influx token, and influx org. They are defined in the script as `INFLUXDB_BUCKET`, `INFLUXDB_URL`, `INFLUXDB_TOKEN`, and `INFLUXDB_ORG` respectively. Replace them with your own.
 
 ## Running the script
 
 The script accepts the start and end timestamps as command-line arguments. Here's an example of how to run the script:
 
 ```
-python sphereapi.py --start 1685617920 --end 1685617980
+python download.py --start 1685617920 --end 1685617980
 ```
-
 
 ## Script Overview
 
@@ -37,5 +40,6 @@ Here's a brief overview of what the script does:
 4. Saves the DataFrame to a CSV file named 'output.csv'.
 5. Prints the DataFrame and the average ad size in bytes.
 6. If an S3 bucket name is provided, syncs the CSV file to the specified S3 bucket.
+7. If an influx bucket name is provided, syncs the dataframe to the specified influx db.
 
 Please ensure that the AWS credentials have the necessary permissions to write to the specified S3 bucket.
