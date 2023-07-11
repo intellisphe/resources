@@ -7,14 +7,13 @@ from s3export import S3Export
 from influxexport import InfluxExport
 
 # Sphere configuration
-BASE_URL = "https://api.getsphere.ai/blocklogs"
 API_KEY = 'your_api_key_here'  # replace with your API key
 
 # S3 Configuration
 AWS_ACCESS_KEY_ID = 'your_aws_access_key' # your access key id
 AWS_SECRET_ACCESS_KEY = 'your_aws_secret_access_ket' # your secret access key
 AWS_REGION_NAME = 'us-east-1' # your region name
-S3_BUCKET = 'your_s3_bucket_name' # your S3 bucket name
+S3_BUCKET = None # your S3 bucket name
 
 # InfluxDB Configuration
 INFLUXDB_URL = "http://localhost:8086"  # replace with your InfluxDB URL
@@ -29,7 +28,6 @@ def create_dataframe(data, schema):
 
 def main(start, end):
     api = SphereApi(
-        base_url=BASE_URL,
         api_key=API_KEY)
 
     schema = api.schema()
@@ -43,7 +41,7 @@ def main(start, end):
     vdf = df[df['ad_position']=='VIDEO']
     length = len(vdf['ad_position'])
     vsize = length * adsize["average_size_bytes"]
-    print(f"\n\nAverage ad size in bytes {vsize}\n\n")
+    print(f"Average ad size in bytes {vsize}")
 
     if S3_BUCKET:
         s3 = S3Export(

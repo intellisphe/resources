@@ -1,8 +1,8 @@
 import requests
 
 class SphereApi:
-    def __init__(self, base_url, api_key):
-        self.base_url = base_url
+    def __init__(self, api_key):
+        self.base_url = "https://api.getsphere.ai/blocklogs"
         self.api_key = api_key
 
     def _call_api(self, path):
