@@ -3,6 +3,8 @@ The API is structured to facilitate retrieval of multiple pages of data. The typ
 
 It's also possible to start the query using a synchronous API endpoint (`blocklogs/query/start`). This synchronous method will initiate the query, wait for its completion, and return the first 999 rows of data. If more results are available from the query, a `next_token` will be included in the response.
 
+The API swagger is available in the [Sphere docs website](http://docs.getsphere.ai/).
+
 ## Algorithm for Asynchronous API Usage
 1. **INITIATE**: Initiate the query by calling the `blocklogs/query/startasync` endpoint. Provide the start time and end time in epoch milliseconds as part of the request. The API will respond with a unique query execution ID.
 
@@ -170,4 +172,4 @@ The query data API, `blocklogs/query/{QUERY_EXECUTION_ID}/data`, retrieves data 
 |platform_browser_version|The browser version.|VARCHAR(255)|`-1`|
 |geo_region|The state or territory of the user.|VARCHAR(255)||
 |ip_address|The IP address of the user.|VARCHAR(255)||
-|ad_size_bytes|The average ad size in bytes calculated independently and constent for a given ad type.|VARCHAR(255)|-1|
+|ad_size_bytes|The average ad size in bytes calculated independently and constent for a given ad type.|VARCHAR(255)|`-1`|
