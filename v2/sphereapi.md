@@ -66,7 +66,7 @@ def getDataAsync(api, timestamp_start, timestamp_end):
 The asynchronous query start API, identified as `blocklogs/query/startasync`, initiates a `SELECT` query on the database with the conditions `start >= start_epoch_milliseconds AND end < end_epoch_milliseconds` and returns immediately with a query execution ID.
 
 ### API Endpoint:
-`GET https://api.getsphere.ai/blocklogs/query/startasync`
+`POST https://api.getsphere.ai/blocklogs/query/startasync`
 
 ### Example Request Payload:
 ```json
@@ -86,7 +86,7 @@ The asynchronous query start API, identified as `blocklogs/query/startasync`, in
 The synchronous query start API, `blocklogs/query/start`, initiates a similar `SELECT` query and waits for the query to finish. The response includes the first page of data, query execution ID, and a next token if more data is available.
 
 ### API Endpoint:
-`GET https://api.getsphere.ai/blocklogs/query/start`
+`POST https://api.getsphere.ai/blocklogs/query/start`
 
 ### Example Request Payload:
 ```json
@@ -125,7 +125,7 @@ The query status API, `blocklogs/query/{QUERY_EXECUTION_ID}/status`, provides th
 The stop query API `blocklogs/query/{QUERY_EXECUTION_ID}/stop`, halts the execution of a query if it's still running.
 
 ### API Endpoint:
-`GET https://api.getsphere.ai/blocklogs/query/{QUERY_EXECUTION_ID}/stop`
+`POST https://api.getsphere.ai/blocklogs/query/{QUERY_EXECUTION_ID}/stop`
 
 ## Query Data API
 The query data API, `blocklogs/query/{QUERY_EXECUTION_ID}/data`, retrieves data associated with a given query execution ID and an optional next token.
