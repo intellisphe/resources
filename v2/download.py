@@ -49,6 +49,8 @@ def getData(api, timestamp_start, timestamp_end):
     return (all_data, query_execution_id, count)
 
 def getDataAsync(api, timestamp_start, timestamp_end):
+
+    # start the query
     query_result = api.query_start_async(timestamp_start, timestamp_end)
     query_execution_id = query_result['query_execution_id']
 
@@ -78,6 +80,7 @@ def getDataAsync(api, timestamp_start, timestamp_end):
     count = 0
     all_data = []
     next_token = None
+    # Get the data
     while True:
         result = api.query_data(
             query_execution_id=query_execution_id,

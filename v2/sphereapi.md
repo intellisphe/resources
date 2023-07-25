@@ -1,14 +1,65 @@
 # Sphere API Usage Guide
 The API is structured to facilitate retrieval of multiple pages of data. The typical workflow involves initiating the query asynchronously, monitoring the query status until completion, and then iterating through the paged data until all results have been fetched. This process is illustrated in the `getDataAsync` method of the provided script.
 
-It's also possible to start the query using a synchronous API endpoint (`blocklogs/query/start`). This synchronous method will initiate the query, wait for its completion, and return the first 999 rows of data. If more results are available from the query, a next_token will be included in the response.
+It's also possible to start the query using a synchronous API endpoint (`blocklogs/query/start`). This synchronous method will initiate the query, wait for its completion, and return the first 999 rows of data. If more results are available from the query, a `next_token` will be included in the response.
 
 ## Algorithm for Asynchronous API Usage
-1. Initiate the query by calling the `blocklogs/query/startasync` endpoint. Provide the start time and end time in epoch milliseconds as part of the request. The API will respond with a unique query execution ID.
+1. **INITIATE**: Initiate the query by calling the `blocklogs/query/startasync` endpoint. Provide the start time and end time in epoch milliseconds as part of the request. The API will respond with a unique query execution ID.
 
-2. Periodically check the query status by making requests to `blocklogs/query/{QUERY_EXECUTION_ID}/status`, continuing until a success status is returned or a predefined timeout limit is reached.
+2. **WAIT**: Periodically check the query status by making requests to `blocklogs/query/{QUERY_EXECUTION_ID}/status`, continuing until a success status is returned or a predefined timeout limit is reached.
 
-3. Upon successful query completion, retrieve the data in pages by making requests to `blocklogs/query/{QUERY_EXECUTION_ID}/data`. Continue this process until all results have been returned, ensuring to include the `next_token` in the request body when it is available.
+3. **FETCH**: Upon successful query completion, retrieve the data in pages by making requests to `blocklogs/query/{QUERY_EXECUTION_ID}/data`. Continue this process until all results have been returned, ensuring to include the `next_token` in the request body when it is available.
+
+## Python Code for the Algorithm
+```python
+def getDataAsync(api, timestamp_start, timestamp_end):
+
+    # 1. INITIATE: start the query
+    query_result = api.query_start_async(timestamp_start, timestamp_end)
+    query_execution_id = query_result['query_execution_id']
+
+    # Wait for 5 seconds for the query to complete
+    time.sleep(5)
+
+    # 2. WAIT: Get execution status
+    for i in range(1, 11):
+        # get query execution
+        query_status = api.query_status(
+            query_execution_id=query_execution_id)
+        query_execution_status = query_status['status']
+
+        if query_execution_status == 'SUCCEEDED':    
+            break
+        elif query_execution_status == 'FAILED':
+            raise Exception(f"STATUS: {query_execution_status}")
+        else:
+            time.sleep(i)
+    else:
+        api.query_stop(
+            query_execution_id=query_execution_id)
+        raise Exception('TIME OVER')
+
+    count = 0
+    all_data = []
+    next_token = None
+    # 3. FETCH: Get the data
+    while True:
+        result = api.query_data(
+            query_execution_id=query_execution_id,
+            next_token=next_token)
+        
+        data = result['data']
+        count = count + len(data)
+        all_data += data
+        next_token = result['next_token'] 
+            if 'next_token' in result else None        
+        
+        # If no more data exit the loop
+        if not next_token:
+            break
+    
+    return (all_data, query_execution_id, count)
+```
 
 # Details of the Sphere API
 ## Asynchronous Query Start
