@@ -44,7 +44,8 @@ def getData(api, timestamp_start, timestamp_end):
         count = count + len(data)
         print(count)
         all_data += data
-        next_token = result['next_token'] if 'next_token' in result else None
+        next_token = result['next_token'] \
+            if 'next_token' in result else None
     
     return (all_data, query_execution_id, count)
 

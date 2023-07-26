@@ -53,7 +53,7 @@ def getDataAsync(api, timestamp_start, timestamp_end):
         data = result['data']
         count = count + len(data)
         all_data += data
-        next_token = result['next_token'] 
+        next_token = result['next_token'] \
             if 'next_token' in result else None        
         
         # If no more data exit the loop
@@ -159,7 +159,7 @@ The query data API, `blocklogs/query/{QUERY_EXECUTION_ID}/data`, retrieves data 
 |Item|Description|SQL Datatype|Null Value|
 |------|----------|------------|--------|
 |id|Unique ID.|VARCHAR(255)|Not Applicable|
-|epoc_in_msec|UTC millisecond date which transaction happened.|INT8|Not Applicable|
+|epoc_in_usec|UTC millisecond date which transaction happened.|INT8|Not Applicable|
 |ad_position|The position where the advertisement was placed. (e.g., VIDEO, BANNER, HEADER, etc)|VARCHAR(255)||
 |app_name|The name of the application or site where the advertisement was placed.|VARCHAR(255)|Empty String|
 |domain|The domain name if it’s a website.|VARCHAR(255)||
