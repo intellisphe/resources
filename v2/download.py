@@ -128,7 +128,7 @@ def main():
     api = SphereApi()
 
     # Get the schema
-    schema = api.schema()
+    schema = api.schema_v2()
     column_names = [col['name'] for col in schema['table']['columns']]
 
     # Get the ad sizes for video

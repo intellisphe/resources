@@ -1,7 +1,7 @@
 import requests
 
 # Sphere configuration
-API_KEY = 'your_key'  # replace with your API key
+API_KEY = 'L6uHUmF1934CBenPeLZJQ4jlnPUbWxIk5X286aDv'  # replace with your API key
 
 class SphereApi:
     def __init__(self,
@@ -34,6 +34,10 @@ class SphereApi:
 
     def schema(self):
         path = "schema"
+        return self._call_api('GET',path)
+
+    def schema_v2(self):
+        path = "schema/v2"
         return self._call_api('GET',path)
 
     def adsize(self, type):
