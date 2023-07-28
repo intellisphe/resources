@@ -1,7 +1,7 @@
 import requests
 
 # Sphere configuration
-API_KEY = 'L6uHUmF1934CBenPeLZJQ4jlnPUbWxIk5X286aDv'  # replace with your API key
+API_KEY = 'api_key'  # replace with your API key
 
 class SphereApi:
     def __init__(self,

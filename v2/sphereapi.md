@@ -3,7 +3,7 @@ The API is structured to facilitate retrieval of multiple pages of data. The typ
 
 It's also possible to start the query using a synchronous API endpoint (`blocklogs/query/start`). This synchronous method will initiate the query, wait for its completion, and return the first 999 rows of data. If more results are available from the query, a `next_token` will be included in the response.
 
-The API swagger is available in the [Sphere docs website](http://docs.getsphere.ai/).
+The API swagger is available in the [Sphere docs website](http://docs.getsphere.ai/). A sample script showing how to use the API is available in [Sphere github repo](https://github.com/intellisphe/resources/tree/main/v2).
 
 ## Algorithm for Asynchronous API Usage
 1. **INITIATE**: Initiate the query by calling the `blocklogs/query/startasync` endpoint. Provide the start time and end time in epoch milliseconds as part of the request. The API will respond with a unique query execution ID.
@@ -13,6 +13,8 @@ The API swagger is available in the [Sphere docs website](http://docs.getsphere.
 3. **FETCH**: Upon successful query completion, retrieve the data in pages by making requests to `blocklogs/query/{QUERY_EXECUTION_ID}/data`. Continue this process until all results have been returned, ensuring to include the `next_token` in the request body when it is available.
 
 ## Python Code for the Algorithm
+The following code is copied from a sample script in [Sphere github repo](https://github.com/intellisphe/resources/tree/main/v2). Refer to the [README file](https://github.com/intellisphe/resources/blob/main/v2/README.pdf) for more information on how to use the script.
+
 ```python
 def getDataAsync(api, timestamp_start, timestamp_end):
 
